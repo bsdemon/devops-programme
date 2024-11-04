@@ -37,4 +37,5 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: Access secrets
-        run: echo "🔐 The secret API key is ${{ secrets.API_KEY }}."    
+        run: echo "🔐 The secret API key is ${{ secrets.API_KEY }}."
+        run: echo "🔐 The secret API key is ${{ secrets.FAKE }}."    
