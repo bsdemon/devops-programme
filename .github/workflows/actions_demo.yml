@@ -30,4 +30,11 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: Unit test
-        run: echo "✅ Run your unit tests here!"    
+        run: echo "✅ Run your unit tests here!"
+  env_secret:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Access secrets
+        run: echo "🔐 The secret API key is ${{ secrets.API_KEY }}."    
