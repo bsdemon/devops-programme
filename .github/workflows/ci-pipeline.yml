@@ -130,3 +130,15 @@ jobs:
             run: |
               cd app  # Change to app directory
               python -m unittest app_test.py
+
+    check_secrets:
+      needs: setup
+      runs-on: ubuntu-latest
+      steps:
+          - uses: actions/checkout@v2
+            with:
+              fetch-depth: 0  # Required to scan all commits
+          - name: Gitleaks scan
+            uses: gitleaks/gitleaks-action@v2
+            env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
