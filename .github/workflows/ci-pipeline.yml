@@ -85,3 +85,17 @@ jobs:
                 pip install -r requirements.txt
             - name: Run black
               run: black . --check
+
+    check_markdown:
+      needs: setup
+      runs-on: ubuntu-latest
+      steps:
+          - uses: actions/checkout@v2
+          - name: Setup Node.js
+            uses: actions/setup-node@v3
+            with:
+              node-version: '16'
+          - name: Install markdownlint-cli
+            run: npm install -g markdownlint-cli
+          - name: Run markdown lint
+            run: markdownlint '**/*.md' --ignore node_modules
