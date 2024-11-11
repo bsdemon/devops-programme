@@ -6,27 +6,82 @@ on:
       - pipeline_practice
 
 jobs:
-    checkout_code:
+    setup:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-    install_dependencies:
-        needs: checkout_code
-        runs-on: ubuntu-latest
-        steps:
-            - name: Install depencies
+            
+            - name: Set up Python
+              uses: actions/setup-python@v5
+              with:
+                python-version: '3.x'
+
+            - name: Cache pip packages
+              uses: actions/cache@v3
+              with:
+                path: ~/.cache/pip
+                key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+                restore-keys: |
+                  ${{ runner.os }}-pip-
+
+            - name: Install dependencies
               run: |
                 python -m pip install --upgrade pip
+                pip install pylint black
                 pip install -r requirements.txt
+
     check_editorconfig:
-        needs: checkout_code
+        needs: setup
         runs-on: ubuntu-latest
         steps:
+            - uses: actions/checkout@v2
             - uses: editorconfig-checker/action-editorconfig-checker@v2
             - run: editorconfig-checker
-    quiality:
-        needs: [checkout_code, install_dependencies]
+
+    lint:
+        needs: setup
         runs-on: ubuntu-latest
         steps:
-            - name: Lint code
+            - uses: actions/checkout@v2
+            - name: Set up Python
+              uses: actions/setup-python@v5
+              with:
+                python-version: '3.x'
+            - name: Cache pip packages
+              uses: actions/cache@v3
+              with:
+                path: ~/.cache/pip
+                key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+                restore-keys: |
+                  ${{ runner.os }}-pip-
+            - name: Install dependencies  # Will be fast due to cache
+              run: |
+                python -m pip install --upgrade pip
+                pip install pylint
+                pip install -r requirements.txt
+            - name: Run pylint
               run: pylint --disable=C0111,C0114,C0115,C0116 $(git ls-files '*.py')
+
+    format:
+        needs: setup
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Set up Python
+              uses: actions/setup-python@v5
+              with:
+                python-version: '3.x'
+            - name: Cache pip packages
+              uses: actions/cache@v3
+              with:
+                path: ~/.cache/pip
+                key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+                restore-keys: |
+                  ${{ runner.os }}-pip-
+            - name: Install dependencies  # Will be fast due to cache
+              run: |
+                python -m pip install --upgrade pip
+                pip install black
+                pip install -r requirements.txt
+            - name: Run black
+              run: black . --check
