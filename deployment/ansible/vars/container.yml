@@ -3,4 +3,4 @@ image_name: bsdemon/python-app
 image_tag: v0.3
 container_name: "python-app"
 listen_port: 8080
-docker_file_path: "deployment/docker" 
+docker_file_path: "deployment/docker"
