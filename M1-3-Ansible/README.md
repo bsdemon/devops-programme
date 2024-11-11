@@ -9,8 +9,8 @@ for the Python application. Let your playbook has the following variables:
 * `image_tag` - contains the tag you tagged your image with, i.e. `v0.2`
 * `listen_port` - contains the listening port you're binding your app to.
 
-Make sure that you set environment variable `PORT` when you define your 
-container in the Ansible playbook that takes its value 
+Make sure that you set environment variable `PORT` when you define your
+container in the Ansible playbook that takes its value
 from `listen_port` variable.
 
 Use Ansible modules. Do not shell out.
