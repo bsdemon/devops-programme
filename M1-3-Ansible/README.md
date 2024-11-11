@@ -2,15 +2,16 @@
 
 ## Ansible Task
 
-Create an Ansible playbook that build, push and then run the Docker image for the Python
-application. Let your playbook has the following variables:
+Create an Ansible playbook that build, push and then run the Docker image
+for the Python application. Let your playbook has the following variables:
 
 * `image_name` - contains the name of your image without the tag, i.e. `vutoff/python-app`
 * `image_tag` - contains the tag you tagged your image with, i.e. `v0.2`
 * `listen_port` - contains the listening port you're binding your app to.
 
-Make sure that you set environment variable `PORT` when you define your container
-in the Ansible playbook that takes its value from `listen_port` variable.
+Make sure that you set environment variable `PORT` when you define your 
+container in the Ansible playbook that takes its value 
+from `listen_port` variable.
 
 Use Ansible modules. Do not shell out.
 
