@@ -107,7 +107,7 @@ jobs:
             run: markdownlint '**/*.md' --ignore node_modules
     
     unit_test:
-      needs: setup
+      needs: [setup, lint]
       runs-on: ubuntu-latest
       steps:
           - uses: actions/checkout@v2
@@ -132,7 +132,7 @@ jobs:
               python -m unittest app_test.py
 
     check_secrets:
-      needs: setup
+      needs: unit_test
       runs-on: ubuntu-latest
       steps:
           - uses: actions/checkout@v2
