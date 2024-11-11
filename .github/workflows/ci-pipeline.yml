@@ -15,6 +15,7 @@ jobs:
                 python -m pip install --upgrade pip
                 pip install pylint black
                 echo "Current directory: $(pwd)"
+                ls -al 
                 echo "Requirements file exists: $(test -f requirements.txt && echo 'Yes' || echo 'No')"
                 pip install -r requirements.txt
             - name: Check if .editorconfig exists
