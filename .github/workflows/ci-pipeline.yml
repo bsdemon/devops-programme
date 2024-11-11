@@ -129,4 +129,4 @@ jobs:
           - name: Run tests
             run: |
               cd app  # Change to app directory
-              python -m unittest
+              python -m unittest app_test.py
