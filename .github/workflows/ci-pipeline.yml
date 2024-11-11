@@ -11,6 +11,7 @@ jobs:
         steps:
             - uses: actions/checkout@v2
     install_dependencies:
+        needs: checkout_code
         runs-on: ubuntu-latest
         steps:
             - name: Install depencies
@@ -18,11 +19,13 @@ jobs:
                 python -m pip install --upgrade pip
                 pip install -r requirements.txt
     check_editorconfig:
+        needs: checkout_code
         runs-on: ubuntu-latest
         steps:
             - uses: editorconfig-checker/action-editorconfig-checker@v2
             - run: editorconfig-checker
     quiality:
+        needs: [checkout_code, install_dependencies]
         runs-on: ubuntu-latest
         steps:
             - name: Lint code
