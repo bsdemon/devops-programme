@@ -1,0 +1,14 @@
+name: Code quality pipeline
+
+on:
+  push:
+    branches:
+      - pipeline_practice
+
+jobs:
+    quiality:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+            
