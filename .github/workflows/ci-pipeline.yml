@@ -11,6 +11,7 @@ jobs:
         steps:
             - name: Install depencies
               run: |
+                cd ..
                 python -m pip install --upgrade pip
                 pip install pylint black
                 echo "Current directory: $(pwd)"
