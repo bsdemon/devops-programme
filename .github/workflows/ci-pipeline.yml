@@ -156,8 +156,8 @@ jobs:
           tags: |
             type=sha,prefix=,suffix=,format=short
             type=raw,value=latest
-      - run: echo $PWD
-      - run: ls -al
+      # - run: echo $PWD
+      # - run: ls -al
       - name: Build Docker image
         uses: docker/build-push-action@v5
         with:
@@ -169,7 +169,15 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
+          
+      # Cache Trivy vulnerability database
+      - name: Cache Trivy vulnerability database
+        uses: actions/cache@v3
+        with:
+          path: .trivycache/
+          key: ${{ runner.os }}-trivy-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-trivy-
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
@@ -183,8 +191,12 @@ jobs:
           exit-code: '1'
           ignore-unfixed: true
 
+      - name: Show scan results
+        if: always()
+        run: cat trivy-results.sarif
+
       - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         if: always()
         with:
           sarif_file: 'trivy-results.sarif'
