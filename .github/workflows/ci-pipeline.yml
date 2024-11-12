@@ -40,6 +40,7 @@ jobs:
   #         }' > .markdownlint.json
   #     - name: Run markdown lint
   #       run: markdownlint '**/*.md' --ignore node_modules
+  #     - name: Check editorconfig
   #     - uses: editorconfig-checker/action-editorconfig-checker@v2
   #     - run: editorconfig-checker
 
@@ -155,7 +156,8 @@ jobs:
           tags: |
             type=sha,prefix=,suffix=,format=short
             type=raw,value=latest
-
+      - run: echo $PWD
+      - run: ls -al
       - name: Build Docker image
         uses: docker/build-push-action@v5
         with:
@@ -167,8 +169,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      - run: echo $PWD
-      - run: ls -al
+
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
