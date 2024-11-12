@@ -200,13 +200,6 @@ jobs:
           exit-code: 1
           ignore-unfixed: true
           cache-dir: .trivycache/
-      
-      - name: List generated files
-        if: always()
-        run: |
-          ls -la .trivyresults/
-          echo "Content of SARIF file:"
-          cat .trivyresults/trivy-results.sarif || echo "File not found"
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
@@ -218,13 +211,13 @@ jobs:
 
       - name: Show scan results
         if: always()
-        run: cat trivy-results.sarif
+        run: cat .trivyresults/trivy-results.sarif
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
         if: always()
         with:
-          sarif_file: 'trivy-results.sarif'
+          sarif_file: '.trivyresults/trivy-results.sarif'
           category: 'trivy'
 
       - name: Push Docker image if scan passes
