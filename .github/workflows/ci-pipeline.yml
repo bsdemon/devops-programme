@@ -89,7 +89,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=devops-programe_pipeline_practice
+            -Dsonar.projectKey=devops-programme_pipeline_practice
             -Dsonar.organization=bsdemon
             -Dsonar.sources=.
             -Dsonar.branch.name=pipeline_practice
