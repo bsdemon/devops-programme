@@ -91,3 +91,4 @@ jobs:
             -Dsonar.projectKey=devops-programe_main
             -Dsonar.organization=bsdemon
             -Dsonar.sources=.
+            -Dsonar.branch.name=main
