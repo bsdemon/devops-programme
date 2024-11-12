@@ -88,6 +88,6 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=devops-programe_pipeline_practice
+            -Dsonar.projectKey=devops-programe_main
             -Dsonar.organization=bsdemon
             -Dsonar.sources=.
