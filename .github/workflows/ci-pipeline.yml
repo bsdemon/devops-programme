@@ -162,7 +162,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: .deployment/docker/Dockerfile  # Specify path to your Dockerfile
+          file: deployment/docker/Dockerfile  # Specify path to your Dockerfile
           push: false  # Don't push yet
           load: true   # Load the image locally for scanning
           tags: ${{ steps.meta.outputs.tags }}
