@@ -27,9 +27,9 @@ jobs:
         run: black . --check
       
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          node-version: '20'
       - name: Install markdownlint-cli
         run: npm install -g markdownlint-cli
       - name: Create markdownlint config
@@ -122,7 +122,7 @@ jobs:
           args: --sarif-file-output=snyk.sarif
 
       - name: Upload result to GitHub Code Scanning
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         if: always()    # Run this step even if previous step failed
         with:
           sarif_file: snyk.sarif
