@@ -86,9 +86,10 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@master
         env: 
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=devops-programe_main
+            -Dsonar.projectKey=devops-programe_pipeline_practice
             -Dsonar.organization=bsdemon
             -Dsonar.sources=.
-            -Dsonar.branch.name=main
+            -Dsonar.branch.name=pipeline_practice
