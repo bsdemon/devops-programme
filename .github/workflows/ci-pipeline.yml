@@ -169,7 +169,13 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          
+
+      # Create directory for Trivy cache and reports
+      - name: Create Trivy directories
+        run: |
+          mkdir -p .trivycache
+          mkdir -p .trivyresults          
+
       # Cache Trivy vulnerability database
       - name: Cache Trivy vulnerability database
         uses: actions/cache@v3
@@ -181,15 +187,34 @@ jobs:
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TRIVY_NO_PROGRESS: true
+          TRIVY_CACHE_DIR: .trivycache/
         with:
           image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/pipeline_practice:${{ steps.meta.outputs.version }}
-          format: 'template'
-          template: '@/contrib/sarif.tpl'
-          output: 'trivy-results.sarif'
-          severity: 'CRITICAL,HIGH'
-          timeout: '10m'
-          exit-code: '1'
+          format: sarif
+          output: .trivyresults/trivy-results.sarif
+          severity: CRITICAL,HIGH
+          timeout: 10m
+          exit-code: 1
           ignore-unfixed: true
+          cache-dir: .trivycache/
+      
+      - name: List generated files
+        if: always()
+        run: |
+          ls -la .trivyresults/
+          echo "Content of SARIF file:"
+          cat .trivyresults/trivy-results.sarif || echo "File not found"
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: .trivyresults/trivy-results.sarif
+          category: trivy
+          wait-for-processing: true
 
       - name: Show scan results
         if: always()
