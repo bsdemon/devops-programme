@@ -209,16 +209,22 @@ jobs:
           category: trivy
           wait-for-processing: true
 
-      - name: Show scan results
-        if: always()
-        run: cat .trivyresults/trivy-results.sarif
-
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
-        if: always()
+      # Run Trivy scan for human-readable report
+      - name: Run Trivy vulnerability scanner (Table)
+        uses: aquasecurity/trivy-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TRIVY_NO_PROGRESS: true
+          TRIVY_CACHE_DIR: .trivycache/
         with:
-          sarif_file: '.trivyresults/trivy-results.sarif'
-          category: 'trivy'
+          image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/pipeline_practice:${{ steps.meta.outputs.version }}
+          format: table
+          output: .trivyresults/trivy-results.txt
+          severity: CRITICAL,HIGH,MEDIUM
+          timeout: 10m
+          exit-code: 0  # Don't fail on vulnerabilities
+          ignore-unfixed: true
+          cache-dir: .trivycache/
 
       - name: Push Docker image if scan passes
         if: success()
