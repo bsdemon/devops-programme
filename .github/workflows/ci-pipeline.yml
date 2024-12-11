@@ -159,4 +159,5 @@ jobs:
         with:
           push: true
           tags: bsdemon/python-app:latest
+          file: ./deployment/docker/Dockerfile
  
