@@ -144,18 +144,14 @@ jobs:
       - name: Build an image from Dockerfile
         run: docker build -t docker.io/bsdemon/python-app:${{ github.sha }} -f deployment/docker/Dockerfile .
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@0.28.0
         with:
           image-ref: 'docker.io/bsdemon/python-app:${{ github.sha }}'
-          scan-type: 'fs'
           format: 'table'
-          exit-code: '0'
-          cache-dir: ~/.cache/trivy
+          exit-code: '1'
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
-          timeout: '10m'
-          skip-dirs: 'node_modules,.git,.github'
 
       - name: Push Docker image if scan passes
         if: success()
