@@ -158,6 +158,6 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: bsdemon/python-app:latest
+          tags: docker.io/bsdemon/python-app:latest
           file: ./deployment/docker/Dockerfile
  
